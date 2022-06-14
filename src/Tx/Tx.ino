@@ -11,6 +11,8 @@ const int echoPin = 5;
 long duration;
 int distance;
 
+unsigned long now = 0;
+
 void setup() {
   // Initialize the M5Stack object
   M5.begin();
@@ -28,32 +30,39 @@ void setup() {
 }
 
 void loop() {
+  //unsigned long now = millis();
   if(M5.BtnA.wasPressed()) {
+    now = micros();
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(0,0);
     M5.Lcd.printf("Time Syncing \r\n");
     //M5.Lcd.printf("LED ON \r\n");
     digitalWrite(LEDPinNo, HIGH);
     //reading = digitalRead(LEDPinNo);
     //M5.Lcd.printf("Pin value: %d\r\n",reading);
     sync = 1;
-    M5.Lcd.printf("Time Syncing \r\n");
+    //M5.Lcd.printf("Time Syncing \r\n");
   }
 
   if(sync==1){
+    //now = micros();
+    //Serial.println(micros()-now);
+    //exit(0);
     digitalWrite(trigPin, HIGH);
     delayMicroseconds(10);
     digitalWrite(trigPin, LOW);
-    delay(32);
+    delayMicroseconds(42228);
+    //Serial.println(micros()-now);
   }
 
   if(M5.BtnB.wasPressed())
   {
+    M5.Lcd.fillScreen(BLACK);
     M5.Lcd.printf("Sync reset \r\n");
-    //M5.Lcd.printf("LED OFF \r\n");
     digitalWrite(LEDPinNo, LOW);
-    //reading = digitalRead(LEDPinNo);
-    //M5.Lcd.printf("Pin value: %d\r\n",reading);
   }
 
   M5.update();
+  
   
 }
